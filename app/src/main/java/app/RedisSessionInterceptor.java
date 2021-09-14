@@ -1,5 +1,6 @@
 package app;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Component
 public class RedisSessionInterceptor implements HandlerInterceptor {
     private final StringRedisTemplate redisTemplate;
@@ -25,8 +27,13 @@ public class RedisSessionInterceptor implements HandlerInterceptor {
         if(username != null){
             String loginSessionId = redisTemplate.opsForValue().get(String.format("username:%s", username));
             if(loginSessionId != null && loginSessionId.equals(session.getId())){
+                // success
                 return true;
+            }else if(loginSessionId != null && !loginSessionId.equals(session.getId())){
+                log.info("id mismatch, session invalidate: {}", session.getId());
             }
+        }else{
+            log.info("please login");
         }
         response401(response);
         return false;

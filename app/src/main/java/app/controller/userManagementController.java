@@ -32,17 +32,6 @@ public class userManagementController {
         return "logout finished";
     }
 
-//    @GetMapping("/session/getUser")
-//    public String getUser(HttpServletRequest request){
-//        HttpSession session = request.getSession();
-//        String username = (String) session.getAttribute("user");
-//        if(username == null){
-//            username = "testSessionRedis|" + System.currentTimeMillis();
-//            session.setAttribute("username", username);
-//        }
-//        System.out.println("port:" + request.getServerPort());
-//        return username;
-//    }
     @GetMapping(value = "/session/getInfo")
     public Map<String, String> addSession (HttpServletRequest request){
         HttpSession session = request.getSession();
