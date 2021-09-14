@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SpringBootApplication
-public class AppApplication {
+public class RedisSessionApplication {
     @GetMapping("/app/get")
     public String hello(){
         return "hello, zzt";
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(AppApplication.class, args);
+        SpringApplication.run(RedisSessionApplication.class, args);
     }
 }
