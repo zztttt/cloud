@@ -1,2 +1,12 @@
 server:
-  port: 8001
+  port: 8080
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowCredentials: true
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"

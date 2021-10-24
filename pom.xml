@@ -20,7 +20,7 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
 		<lombok.version>1.18.20</lombok.version>
 	</properties>
@@ -73,5 +73,27 @@
 		</dependencies>
 
 	</dependencyManagement>
+	<!--docker 插件配置-->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+					<imageName>reins/bookstore-docker</imageName>
+					<dockerDirectory>${project.basedir}</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 
 </project>

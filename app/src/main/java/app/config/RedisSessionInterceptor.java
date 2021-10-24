@@ -1,5 +1,10 @@
-package app;
+package app.config;
 
+import app.utils.msgutils.Msg;
+import app.utils.msgutils.MsgCode;
+import app.utils.msgutils.MsgUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -22,6 +27,7 @@ public class RedisSessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
+        log.info("preHandle. session id: {}", request.getSession().getId());
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
         if(username != null){
@@ -35,14 +41,18 @@ public class RedisSessionInterceptor implements HandlerInterceptor {
         }else{
             log.info("please login");
         }
-        response401(response);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        Msg msg = MsgUtil.makeMsg(MsgCode.LOGIN_SESSION_EXPIRE);
+        response.getWriter().print(JSON.toJSON(msg).toString());
         return false;
     }
 
     private void response401(HttpServletResponse response) throws Exception{
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-        response.getWriter().print("401");
+
+        Msg msg =  MsgUtil.makeMsg(MsgCode.LOGIN_USER_ERROR);
+        String json = JSON.toJSON(msg).toString();
+        response.getWriter().print(json);
     }
 
 }
