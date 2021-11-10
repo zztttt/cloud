@@ -1,7 +1,11 @@
 server:
   port: 8080
 spring:
+  application:
+    name: GATEWAY-APPLICATION
   cloud:
+    discovery:
+      enabled: true
     gateway:
       globalcors:
         cors-configurations:
@@ -10,3 +14,23 @@ spring:
             allowedOriginPatterns: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      loadbalancer:
+        use404: true
+      routes:
+        - id: APP-APPLICATION
+          uri: lb://APP-APPLICATION
+          predicates:
+            - Path=/login
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
