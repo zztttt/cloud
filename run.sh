@@ -9,7 +9,7 @@ echo "run mysql-slave1"
 docker run -d -p 3301:3306 --name=mysql-slave1 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7
 
 echo "run mysql-slave2"
-docker run -d -p 3302:3306 --name=mysql-master -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7
+docker run -d -p 3302:3306 --name=mysql-slave2 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7
 
 sleep 10s
 
